@@ -1,8 +1,12 @@
-﻿int[,] matrizGeral = new int[3,3];
+﻿string[,] matrizGeral = new string[3,3]
+{
+    {"-", "-", "-"},
+    {"-", "-", "-"},
+    {"-", "-", "-"}
+};
 int winner = 0;
-int[] oneOrZero = new int[] { 0, 1 }; 
 
-static void ImprimirMatriz(int[,] matriz)
+static void ImprimirMatriz(string[,] matriz)
 // ImprimirMatriz recebe uma matriz de argumento e a imprime no console
 {
     for(int i = 0; i < matriz.GetLength(0); i++)
@@ -14,18 +18,18 @@ static void ImprimirMatriz(int[,] matriz)
         Console.WriteLine("");
     }
 }
-static int WinnerChecker(int[,] matriz)
+static int WinnerChecker(string[,] matriz)
 {
     int winner = 0;
-    int soma;
+    string soma;
     // checando as linhas
     for(int i = 0; i < matriz.GetLength(0); i++)
     {
-        soma = 0;
+        soma = "";
         for(int j = 0; j < matriz.GetLength(1); j++)
             soma += matriz[i,j];
 
-        if(soma == 3)
+        if(soma == "XXX" || soma == "OOO")
         {
             winner = 1;
             return winner;
@@ -35,11 +39,11 @@ static int WinnerChecker(int[,] matriz)
     // checando colunas
     for(int j = 0; j < matriz.GetLength(1); j++)
     {
-        soma = 0;
+        soma = "";
         for(int i = 0; i < matriz.GetLength(0); i++)
             soma += matriz[i,j];
 
-        if(soma == 3)
+        if(soma == "XXX" || soma == "OOO")
         {
             winner = 1;
             return winner;
@@ -47,15 +51,15 @@ static int WinnerChecker(int[,] matriz)
     }
 
     // checando diagonais
-    soma = 0;
+    soma = "";
     for(int i = 0; i < matriz.GetLength(0); i++)
         soma += matriz[i,i];
-    if(soma == 3)
+    if(soma == "XXX" || soma == "OOO")
     {
         winner = 1;
         return winner;
     }
-    if(matriz[2,0] + matriz[1,1] + matriz[0,2] == 3)
+    if(matriz[2,0] + matriz[1,1] + matriz[0,2] == "XXX" || matriz[2,0] + matriz[1,1] + matriz[0,2] == "OOO")
     {
         winner = 1;
         return winner;
@@ -63,24 +67,55 @@ static int WinnerChecker(int[,] matriz)
 
     return winner;
 }
+static (int, int, string) Player1(string[,] matriz)
+{
+    string value = "X";
+    int linha;
+    int coluna;
+    while(true)
+    {
+    Console.WriteLine("Jogador 1");
+    Console.WriteLine("Linha: ");
+    linha = Convert.ToInt32(Console.ReadLine());
+    Console.WriteLine("Coluna: ");
+    coluna = Convert.ToInt32(Console.ReadLine());
+    if(matriz[linha-1, coluna-1] == "-")
+        break;
+    }
+    return (linha, coluna, value);
+}
+static (int, int, string) Player2(string[,] matriz)
+{
+    string value = "O";
+    int linha;
+    int coluna;
+    while(true)
+    {
+    Console.WriteLine("Jogador 2");
+    Console.WriteLine("Linha: ");
+    linha = Convert.ToInt32(Console.ReadLine());
+    Console.WriteLine("Coluna: ");
+    coluna = Convert.ToInt32(Console.ReadLine());
+    if(matriz[linha-1, coluna-1] == "-")
+        break;
+    }
+    return (linha, coluna, value);
+}
 
 while(winner-1 != 0)
 {
-    Console.WriteLine("Digite 0 ou 1: ");
-    int num = Convert.ToInt32(Console.ReadLine());
-    if(!(oneOrZero.Contains(num)))
-        while(!(oneOrZero.Contains(num)))
-        {
-            Console.WriteLine("Número diferente de 0 ou 1, digite novamente: ");
-            num = Convert.ToInt32(Console.ReadLine());
-        }
-    Console.WriteLine("Digite a linha: ");
-    int linha = Convert.ToInt32(Console.ReadLine());
-    Console.WriteLine("Digite a coluna: ");
-    int coluna = Convert.ToInt32(Console.ReadLine());
-
-    matrizGeral[linha-1, coluna-1] = num;
+    (int linha, int coluna, string value) = Player1(matrizGeral);
+    matrizGeral[linha-1, coluna-1] = value;
     ImprimirMatriz(matrizGeral);
+
+    winner = WinnerChecker(matrizGeral);
+    if(winner-1 == 0)
+        break;
+
+    (linha, coluna, value) = Player2(matrizGeral);
+    matrizGeral[linha-1, coluna-1] = value;
+    ImprimirMatriz(matrizGeral);
+
     winner = WinnerChecker(matrizGeral);
 }
 Console.WriteLine("O jogo acabou.");
