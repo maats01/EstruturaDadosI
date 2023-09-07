@@ -42,7 +42,7 @@ namespace StackClass
                 return "";
             }
 
-            return $"[{stack[top--]}]";
+            return stack[top--];
         }
 
         public void Peek()
