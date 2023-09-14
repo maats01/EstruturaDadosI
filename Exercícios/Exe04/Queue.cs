@@ -23,17 +23,8 @@ namespace QueueArray
                 return true;
             }
 
-            else
-            {
-            for(int i = arrayLength; i >= 0; i--)
-            {
-                queue[i+1] = queue[i];
-            }
-
-            arrayLength++;
-            queue[arrayLength] = num;
+            queue[++arrayLength] = num;
             return true;
-            }
         }
 
         public int Dequeue()
