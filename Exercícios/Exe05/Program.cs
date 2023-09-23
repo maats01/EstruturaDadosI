@@ -11,19 +11,36 @@ using System.Collections;
 
 Hashtable tabela = new Hashtable();
 
-for(int i = 0; i < 5; i++)
+while(true)
 {
-    Console.WriteLine("Key: ");
-    int cpf = Convert.ToInt32(Console.ReadLine());
+    Console.WriteLine("\nKey: ");
+    string? cpf = Console.ReadLine();
     Console.WriteLine("Value: ");
-    string nome = Console.ReadLine();
+    string? nome = Console.ReadLine();
 
     try
     {
         tabela.Add(cpf, nome);
     }
-    catch
+    catch(ArgumentException ae)
     {
-        
+        Console.WriteLine("\n Chave inválida.");
+        Console.WriteLine($"Detalhes: {ae.Message}");
     }
+    catch(Exception ex)
+    {
+        Console.WriteLine($"\nErro genérico.");
+        Console.WriteLine($"Detalhes: {ex}");
+    }
+
+    Console.WriteLine("\nDeseja adicionar mais um elemento na tabela? [s/n]");
+    if(!(Console.ReadLine() == "s"))
+    {
+        break;
+    }
+}
+
+foreach(DictionaryEntry de in tabela)
+{
+    Console.WriteLine("{0}: {1}", de.Key, de.Value);
 }
